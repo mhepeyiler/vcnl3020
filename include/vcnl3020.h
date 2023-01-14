@@ -2,10 +2,12 @@
 #define VCNL3020_INCLUDE_VCNL3020_H
 
 #ifdef __cplusplus
+#include <cstddef>
 #include <cstdint>
 extern "C" {
 #else
-#include <stdint.h>
+#include "stddef.h"
+#include "stdint.h"
 #include "stdbool.h"
 #define bool _Bool
 #endif

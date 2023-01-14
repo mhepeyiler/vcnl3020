@@ -69,7 +69,7 @@ enum Registers {
      * @brief Register #15 Proximity Modulator Timing Adjustment
      */
     rProxModulatorTimingAdj     = (uint8_t)0x8F,
-}
+};
 
 
 #ifdef __cplusplus
