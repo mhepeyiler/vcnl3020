@@ -9,28 +9,34 @@ static void getRegister1Value(const pVCNL3020_t dev) {
     }
     uint8_t data = 0;
     dev->read(dev->i2cDev, rIDRevision, &data, 1);
-    dev->productID = (data & 0x11110000);
-    dev->revisionID = (data & 0x00001111);
+    dev->productID = (data & 0b11110000);
+    dev->revisionID = (data & 0b00001111);
 }
 
 bool isDataReady(const pVCNL3020_t dev) {
     uint8_t data = 0;
-    dev->read(dev->i2cDev, devrCommand, &data, 1);
+    dev->read(dev->i2cDev, rCommand, &data, 1);
     return GET_BIT_FLAG(data, 5);
 }
 
 void startSingleMeasurement(const pVCNL3020_t dev) {
-    uint8_t data = (0 | 1 << 3);
+    uint8_t data = 0;
+    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data |= 0b00001000;
     dev->write(dev->i2cDev, rCommand, &data, 1);
 }
 
 void startPeriodicMeasurement(const pVCNL3020_t dev) {
-    uint8_t data = (0 | 1 << 1);
+    uint8_t data = 0;
+    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data |= 0b00000010;
     dev->write(dev->i2cDev, rCommand, &data, 1);
 }
 
 void setSelftimedStateMachine(const pVCNL3020_t dev) {
-    uint8_t data = (0 | 1 << 0);
+    uint8_t data = 0;
+    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data |= 0b00000001;
     dev->write(dev->i2cDev, rCommand, &data, 1);
 }
 
@@ -49,7 +55,7 @@ void setRateOfProxityMeasurement(const pVCNL3020_t dev, RateOfMeasurement_t rate
 }
 
 uint8_t getFuseProgID(const pVCNL3020_t dev) {
-
+	return 0;
 }
 
 void setIRLedCurrent(const pVCNL3020_t dev, IRLedCurrent_t current) {
@@ -59,11 +65,12 @@ void setIRLedCurrent(const pVCNL3020_t dev, IRLedCurrent_t current) {
 IRLedCurrent_t getIRLedCurrent(const pVCNL3020_t dev) {
     uint8_t data = 0;
     dev->read(dev->i2cDev, rLEDCurrentSettingProxMode, &data, 1);
+    return data;
 }
 
 uint16_t getProxiResult(const pVCNL3020_t dev) {
     uint8_t data[2] = {0, 0};
-    dev->read(dev->i2cDev, rProxMeasurementResult1, &data, 2);
+    dev->read(dev->i2cDev, rProxMeasurementResult1, data, 2);
     return (data[1] << 8 | data[0]);
 }
 

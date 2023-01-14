@@ -49,11 +49,16 @@ enum Registers {
      * @brief Register #11 Low Threshold
      */
     rLowThreshold1              = (uint8_t)0x8A,
+
+    /**
+     * @brief Register #11 Low Threshold
+     */
+    rLowThreshold2              = (uint8_t)0x8B,
     
     /**
      * @brief Register #12 High Threshold
      */
-    rHighThreshold2             = (uint8_t)0x8C,
+    rHighThreshold1             = (uint8_t)0x8C,
     
     /**
      * @brief Register #13 High Threshold
