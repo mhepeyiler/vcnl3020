@@ -8,36 +8,36 @@ static void getRegister1Value(const pVCNL3020_t dev) {
         return;
     }
     uint8_t data = 0;
-    dev->read(dev->i2cDev, rIDRevision, &data, 1);
+    data = dev->read8(dev->i2cDev, dev->deviceAddress, rIDRevision);
     dev->productID = (data & 0b11110000);
     dev->revisionID = (data & 0b00001111);
 }
 
 bool isDataReady(const pVCNL3020_t dev) {
     uint8_t data = 0;
-    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data = dev->read8(dev->i2cDev, dev->deviceAddress, rCommand);
     return GET_BIT_FLAG(data, 5);
 }
 
 void startSingleMeasurement(const pVCNL3020_t dev) {
     uint8_t data = 0;
-    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data = dev->read8(dev->i2cDev, dev->deviceAddress, rCommand);
     data |= 0b00001000;
-    dev->write(dev->i2cDev, rCommand, &data, 1);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rCommand, data);
 }
 
 void startPeriodicMeasurement(const pVCNL3020_t dev) {
     uint8_t data = 0;
-    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data = dev->read8(dev->i2cDev, dev->deviceAddress, rCommand);
     data |= 0b00000010;
-    dev->write(dev->i2cDev, rCommand, &data, 1);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rCommand, data);
 }
 
 void setSelftimedStateMachine(const pVCNL3020_t dev) {
     uint8_t data = 0;
-    dev->read(dev->i2cDev, rCommand, &data, 1);
+    data = dev->read8(dev->i2cDev, dev->deviceAddress, rCommand);
     data |= 0b00000001;
-    dev->write(dev->i2cDev, rCommand, &data, 1);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rCommand, data);
 }
 
 uint8_t getProductID(const pVCNL3020_t dev) {
@@ -51,7 +51,7 @@ uint8_t getRevisionID(const pVCNL3020_t dev) {
 }
 
 void setRateOfProxityMeasurement(const pVCNL3020_t dev, RateOfMeasurement_t rate) { 
-    dev->write(dev->i2cDev, rRateProximityMeasurement, &rate, 1);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rRateProximityMeasurement, rate);
 }
 
 uint8_t getFuseProgID(const pVCNL3020_t dev) {
@@ -59,18 +59,20 @@ uint8_t getFuseProgID(const pVCNL3020_t dev) {
 }
 
 void setIRLedCurrent(const pVCNL3020_t dev, IRLedCurrent_t current) {
-    dev->write(dev->i2cDev, rLEDCurrentSettingProxMode, &current, 1);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rLEDCurrentSettingProxMode, current);
 }
 
 IRLedCurrent_t getIRLedCurrent(const pVCNL3020_t dev) {
     uint8_t data = 0;
-    dev->read(dev->i2cDev, rLEDCurrentSettingProxMode, &data, 1);
+    data = dev->read8(dev->i2cDev, dev->deviceAddress, rLEDCurrentSettingProxMode);
     return data;
 }
 
 uint16_t getProxiResult(const pVCNL3020_t dev) {
+	// TODO double check!!
     uint8_t data[2] = {0, 0};
-    dev->read(dev->i2cDev, rProxMeasurementResult1, data, 2);
+    data[0] = dev->read8(dev->i2cDev, dev->deviceAddress, rProxMeasurementResult1);
+    data[1] = dev->read8(dev->i2cDev, dev->deviceAddress, rProxMeasurementResult2);
     return (data[1] << 8 | data[0]);
 }
 
@@ -91,11 +93,15 @@ void setIntSel(const pVCNL3020_t dev, bool state) {
 }
 
 void setLowThreshold(const pVCNL3020_t dev, uint16_t threshold) {
+	// TODO double check!!
     uint8_t data[2] = {threshold | 0xFF, threshold >> 8};
-    dev->write(dev->i2cDev, rLowThreshold1, data, 2);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rLowThreshold1, data[0]);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rLowThreshold2, data[1]);
 }
 
 void setHighThreshold(const pVCNL3020_t dev, uint16_t threshold) {
+	// TODO double check!!
     uint8_t data[2] = {threshold | 0xFF, threshold >> 8};
-    dev->write(dev->i2cDev, rLowThreshold1, data, 2);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rHighThreshold1, data[0]);
+    dev->write8(dev->i2cDev, dev->deviceAddress, rHighThreshold2, data[1]);
 }

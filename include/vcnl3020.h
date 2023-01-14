@@ -12,13 +12,15 @@ extern "C" {
 #define bool _Bool
 #endif
 
+#define VCNL3020_DEVICE_ADDRESS 0x13
 
 typedef struct VCNL3020
 {
-    int (*read)(void*, uint8_t, uint8_t*, size_t);
-    int (*write)(void*, uint8_t, uint8_t*, size_t);
-    void* i2cDev;
+	int (*read8)(void*, uint8_t, uint8_t);
+	int (*write8)(void*, uint8_t, uint8_t, uint8_t);
+	void* i2cDev;
     int sanity;
+    uint8_t deviceAddress;
     uint8_t productID;
     uint8_t revisionID;
 } VCNL3020_t, *pVCNL3020_t;
