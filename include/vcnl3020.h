@@ -12,15 +12,6 @@ extern "C" {
 #define bool _Bool
 #endif
 
-#define CREATE_VCNL3020(devPtr, readFPtr, writePtr) \
-    {                                               \      
-        .read = readFPtr,                           \
-        .write = writeFPtr,                         \
-        .dev = devPtr,                              \
-        .sanity = 0,                                \
-        .productID = 0,                             \
-        .revisionID = 0                             \
-    };
 
 typedef struct VCNL3020
 {
