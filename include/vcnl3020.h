@@ -36,7 +36,7 @@ typedef enum RateOfMeasurement {
     M250     = 0b0000111
 } RateOfMeasurement_t;
 
-typedef enum IRLedCurrent {
+typedef enum InterruptCount {
     C1      = 0b0000000,
     C2      = 0b0000001,
     C4      = 0b0000010,
@@ -47,7 +47,7 @@ typedef enum IRLedCurrent {
     C128    = 0b0000111    
 } InterruptCount_t;
 
-typedef enum  {
+typedef enum IRLedCurrent {
     mA0     = 0,
     mA10    = 1,
     mA20    = 2,
