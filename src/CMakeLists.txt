@@ -1,31 +1,21 @@
-add_library(VCNL3020_STATIC STATIC
+add_library(${CMAKE_PROJECT_NAME}_STATIC STATIC
     vcnl3020.c
 )
 
-add_library(VCNL3020_SHARED SHARED
+add_library(${CMAKE_PROJECT_NAME}_SHARED SHARED
     vcnl3020.c
 )
 
-target_include_directories(VCNL3020_SHARED
+target_include_directories(${CMAKE_PROJECT_NAME}_SHARED
     PUBLIC
     "${PROJECT_SOURCE_DIR}/include"
+    PRIVATE
+    "${PROJECT_SOURCE_DIR}/src/include"
 )
 
-target_include_directories(VCNL3020_STATIC
+target_include_directories(${CMAKE_PROJECT_NAME}_STATIC
     PUBLIC
     "${PROJECT_SOURCE_DIR}/include"
-)
-
-target_compile_definitions(VCNL3020_SHARED
-    PUBLIC
-    PUBLIC_VCNL3020
     PRIVATE
-    PRIVATE_VCNL3020
-)
-
-target_compile_definitions(VCNL3020_STATIC
-    PUBLIC
-    PUBLIC_VCNL3020
-    PRIVATE
-    PRIVATE_VCNL3020
+    "${PROJECT_SOURCE_DIR}/src/include"
 )
